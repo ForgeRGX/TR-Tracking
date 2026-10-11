@@ -76,7 +76,11 @@ $path        = current_path();
 <footer class="container pb-4 text-center text-muted small">
     <?= t('Registro personal de inversiones (no se conecta a Trade Republic ni muestra valor de mercado)') ?>
     <br><br>
-    <a href="">TR Tracking v1.0 (4f879ab3)</a>
+    <?php
+        $appVersion = env('APP_VERSION', 'dev');
+        $appCommit  = env('APP_COMMIT', 'unknown');
+    ?>
+    <a href="https://github.com/ForgeRGX/TR-Tracking" target="_blank">TR Tracking <?= e($appVersion) ?>(<?= e($appCommit) ?>)</a>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
