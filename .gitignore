@@ -1,0 +1,24 @@
+# Secretos y configuración local
+.env
+.env.*
+!.env.example
+
+# ...
+docker-compose.yml
+!docker-compose.yml.example
+CHANGELOG.md
+README.md
+
+# Copias de seguridad de la base de datos (contienen datos financieros)
+backups/*
+!backups/.gitkeep
+
+# Editores y sistema operativo
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
