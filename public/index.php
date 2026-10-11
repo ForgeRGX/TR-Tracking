@@ -51,8 +51,8 @@ if ($method === 'POST' && !csrf_check($_POST['_csrf'] ?? null)) {
 }
 
 // Solo /login y /register son públicas; el resto exige sesión iniciada
-$publicPaths = ['/login', '/register'];
-$path = current_path();
+$publicPaths = ['/login', '/register', '/api/version'];
+$path        = current_path();
 if (!Auth::check() && !in_array($path, $publicPaths, true)) {
     redirect('/login');
 }

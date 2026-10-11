@@ -38,4 +38,6 @@ return [
     ['GET',  '/types/{id}/edit',          [AssetTypeController::class, 'edit']],
     ['POST', '/types/{id}',               [AssetTypeController::class, 'update']],
     ['POST', '/types/{id}/delete',        [AssetTypeController::class, 'delete']],
+
+    ['GET', '/api/version',               [VersionController::class, 'index']],
 ];

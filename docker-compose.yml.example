@@ -19,6 +19,7 @@ services:
       MYSQL_USER: ${MYSQL_USER:?Define MYSQL_USER en .env}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Define MYSQL_PASSWORD en .env}
       TZ: ${TZ:-Europe/Madrid}
+      GITHUB_REPOSITORY: ${GITHUB_REPOSITORY:-ForgeRGX/TR-Tracking}
     depends_on:
       db:
         condition: service_healthy
