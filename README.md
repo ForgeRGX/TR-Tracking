@@ -194,17 +194,6 @@ Para consultar el código fuente y los cambios del proyecto:
 
 ---
 
-## Seguridad
-
-- No publiques contraseñas, tokens ni claves de acceso.
-- Mantén las credenciales fuera del código fuente.
-- No incluyas copias de seguridad con datos personales o financieros.
-- Revisa los cambios y el historial de Git antes de publicar información nueva.
-- Mantén actualizados PHP, MySQL, Docker y sus dependencias.
-- No expongas directamente servicios internos, como la base de datos, a Internet sin las medidas de protección adecuadas.
-
----
-
 ## Licencia
 
 La licencia del proyecto está pendiente de definir.
