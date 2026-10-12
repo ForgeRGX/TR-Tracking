@@ -198,7 +198,7 @@ Para consultar el código fuente y los cambios del proyecto:
 
 La licencia del proyecto está pendiente de definir.
 
-Hasta que se incluya un archivo `LICENSE` con los términos correspondientes, no debe asumirse que el código está disponible para su reutilización o redistribución sin restricciones.
+Hasta que se incluya un archivo `LICENSE` con los términos correspondientes, no se debe asumir que el código está disponible para su reutilización o redistribución sin restricciones.
 
 ---
 
