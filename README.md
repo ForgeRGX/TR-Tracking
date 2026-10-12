@@ -52,8 +52,6 @@ Opciones de configuración de la aplicación.
 
 ![Configuración de TR Tracking](docs/images/settings.png)
 
-> **Nota:** sustituye las imágenes de ejemplo por capturas reales. Si todavía no tienes alguna, puedes eliminar temporalmente su sección o dejarla preparada para añadirla más adelante.
-
 ---
 
 ## Funcionalidades
