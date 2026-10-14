@@ -100,3 +100,56 @@ $cards = [
 
     <script type="application/json" id="chart-data"><?= json_encode($chart, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE) ?></script>
 <?php endif; ?>
+
+<?php if ($pendingScheduled > 0 || $upcoming): ?>
+<div class="row g-4 mt-0">
+    <?php if ($pendingScheduled > 0): ?>
+    <div class="col-12">
+        <div class="alert alert-warning d-flex align-items-center gap-2 mb-0">
+            <i class="bi bi-bell-fill fs-5"></i>
+            <span>
+                <?= t('Tienes %d compra(s) programada(s) pendiente(s) de confirmación.', [$pendingScheduled]) ?>
+                <a href="/scheduled" class="alert-link ms-2"><?= t('Revisar') ?> &rarr;</a>
+            </span>
+        </div>
+    </div>
+    <?php endif; ?>
+
+    <?php if ($upcoming): ?>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-calendar-check me-1"></i><?= t('Próximas compras programadas') ?></span>
+                <a href="/scheduled" class="btn btn-sm btn-outline-secondary"><?= t('Ver todas') ?></a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 small">
+                    <thead>
+                        <tr>
+                            <th><?= t('Fecha esperada') ?></th>
+                            <th><?= t('Activo') ?></th>
+                            <th><?= t('Frecuencia') ?></th>
+                            <th class="text-end"><?= t('Importe') ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($upcoming as $u): ?>
+                        <tr>
+                            <td class="text-nowrap"><?= date_fmt($u['date']) ?></td>
+                            <td>
+                                <a href="/scheduled/<?= (int) $u['sp_id'] ?>" class="text-decoration-none fw-semibold">
+                                    <?= e($u['asset_name']) ?>
+                                </a>
+                            </td>
+                            <td class="text-muted"><?= frequency_label($u['frequency']) ?></td>
+                            <td class="text-end text-nowrap"><?= money($u['amount_eur']) ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
+</div>
+<?php endif; ?>

@@ -33,13 +33,19 @@ final class DashboardController extends BaseController
             ],
         ];
 
+        ScheduledPurchase::generatePendingOccurrences();
+        $pending  = ScheduledPurchaseOccurrence::pendingCount();
+        $upcoming = ScheduledPurchase::upcomingDates(5);
+
         $this->render('dashboard/index', [
-            'title'      => t('Dashboard'),
-            'withCharts' => true,
-            'totals'     => $totals,
-            'byType'     => $byType,
-            'byAsset'    => $byAsset,
-            'chart'      => $chart,
+            'title'            => t('Dashboard'),
+            'withCharts'       => true,
+            'totals'           => $totals,
+            'byType'           => $byType,
+            'byAsset'          => $byAsset,
+            'chart'            => $chart,
+            'pendingScheduled' => $pending,
+            'upcoming'         => $upcoming,
         ]);
     }
 }
