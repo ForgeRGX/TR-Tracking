@@ -217,3 +217,115 @@ function partial(string $name, array $vars = []): void
     extract($vars, EXTR_SKIP);
     require BASE_PATH . "/views/partials/$name.php";
 }
+
+/* ---------- Días laborables (lun–vie, sin festivos) ---------- */
+
+/** Primer día lun–vie del mes indicado. */
+function first_business_day_of_month(int $year, int $month): DateTimeImmutable
+{
+    $d = new DateTimeImmutable(sprintf('%04d-%02d-01', $year, $month));
+    while ((int) $d->format('N') > 5) {
+        $d = $d->modify('+1 day');
+    }
+    return $d;
+}
+
+/** Primer día lun–vie igual o posterior al día $from del mes indicado. */
+function first_business_day_from(int $year, int $month, int $from): DateTimeImmutable
+{
+    // Usamos format('t') (días del mes) en lugar de cal_days_in_month para no depender
+    // de la extensión 'calendar', que no siempre está disponible en PHP 8 Docker.
+    $firstOfMonth = new DateTimeImmutable(sprintf('%04d-%02d-01', $year, $month));
+    $days = (int) $firstOfMonth->format('t');
+    $from = min($from, $days);
+    $d = new DateTimeImmutable(sprintf('%04d-%02d-%02d', $year, $month, $from));
+    while ((int) $d->format('N') > 5) {
+        $d = $d->modify('+1 day');
+    }
+    return $d;
+}
+
+/**
+ * Genera todas las fechas esperadas de una tarea programada entre $start y $until (inclusive).
+ * Devuelve array de strings 'Y-m-d' ordenados ascendentemente.
+ *
+ * @param string $frequency  Valor del ENUM de scheduled_purchases.frequency
+ */
+function scheduled_expected_dates(string $start, string $frequency, string $until): array
+{
+    $startDt = new DateTimeImmutable($start);
+    $untilDt = new DateTimeImmutable($until);
+
+    if ($untilDt < $startDt) {
+        return [];
+    }
+
+    $dates = [];
+
+    if ($frequency === 'weekly') {
+        // Primer lunes >= start_date
+        $cursor = $startDt->modify('Monday this week');
+        if ($cursor < $startDt) {
+            $cursor = $cursor->modify('+7 days');
+        }
+        while ($cursor <= $untilDt) {
+            $dates[] = $cursor->format('Y-m-d');
+            $cursor   = $cursor->modify('+7 days');
+        }
+        return $dates;
+    }
+
+    [$sy, $sm] = [(int) $startDt->format('Y'), (int) $startDt->format('n')];
+    [$ey, $em] = [(int) $untilDt->format('Y'), (int) $untilDt->format('n')];
+
+    $addStart = in_array($frequency, ['monthly_start', 'bimonthly', 'quarterly_start'], true);
+    $addMid   = in_array($frequency, ['monthly_mid',   'bimonthly', 'quarterly_mid'],   true);
+
+    // Para quarterly: calculamos el offset del mes inicial (0–2) para saber cada 3 meses
+    $quarterOffset = ($sm - 1) % 3; // 0 si el mes inicial es ene/abr/jul/oct, etc.
+
+    $y = $sy;
+    $m = $sm;
+    while ($y < $ey || ($y === $ey && $m <= $em)) {
+        // ¿Es este mes un mes de ocurrencia para las frecuencias quarterly?
+        $isQuarterMonth = (($m - 1) % 3) === $quarterOffset;
+
+        if ($addStart && ($frequency !== 'quarterly_start' || $isQuarterMonth)) {
+            $d = first_business_day_of_month($y, $m);
+            if ($d >= $startDt && $d <= $untilDt) {
+                $dates[] = $d->format('Y-m-d');
+            }
+        }
+
+        if ($addMid && ($frequency !== 'quarterly_mid' || $isQuarterMonth)) {
+            $d = first_business_day_from($y, $m, 15);
+            if ($d >= $startDt && $d <= $untilDt) {
+                $dates[] = $d->format('Y-m-d');
+            }
+        }
+
+        if ($m === 12) {
+            $y++;
+            $m = 1;
+        } else {
+            $m++;
+        }
+    }
+
+    sort($dates);
+    return array_unique($dates);
+}
+
+/** Etiqueta legible de una frecuencia de tarea programada. */
+function frequency_label(string $freq): string
+{
+    return match ($freq) {
+        'weekly'          => t('Semanal (cada lunes)'),
+        'monthly_start'   => t('Mensual (1.er día lab. del mes)'),
+        'monthly_mid'     => t('Mensual (1.er día lab. desde el 15)'),
+        'bimonthly'       => t('2 veces/mes (inicio y mediados)'),
+        'quarterly_start' => t('Trimestral (1.er día lab. del mes)'),
+        'quarterly_mid'   => t('Trimestral (1.er día lab. desde el 15)'),
+        default           => e($freq),
+    };
+}

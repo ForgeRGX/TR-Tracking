@@ -1,8 +1,8 @@
 # TR Tracking
 
-**Aplicación web para el seguimiento y la gestión de inversiones.**
+**Web application for investment tracking and management.**
 
-TR Tracking es una aplicación web desarrollada en PHP que permite centralizar la información de una cartera de inversiones mediante una interfaz propia, con persistencia de datos en MySQL y despliegue mediante Docker.
+TR Tracking is a self-hosted PHP web application that lets you centralise your investment portfolio using your own interface, with data stored in MySQL and deployed via Docker.
 
 <p align="center">
   <img src="docs/images/logo.png" alt="TR Tracking" width="180">
@@ -12,163 +12,236 @@ TR Tracking es una aplicación web desarrollada en PHP que permite centralizar l
   <img src="https://img.shields.io/badge/PHP-8.3-777BB4?logo=php&logoColor=white" alt="PHP 8.3">
   <img src="https://img.shields.io/badge/MySQL-8.4-4479A1?logo=mysql&logoColor=white" alt="MySQL 8.4">
   <img src="https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white" alt="Docker Compose">
-  <img src="https://img.shields.io/badge/License-Por%20definir-lightgrey" alt="Licencia por definir">
+  <img src="https://img.shields.io/badge/License-TBD-lightgrey" alt="Licence TBD">
 </p>
 
 ---
 
-## Capturas de pantalla
+## Screenshots
 
-Una selección de imágenes de la aplicación para mostrar su interfaz y sus principales funcionalidades.
+A selection of screenshots showing the interface and main features.
 
 ### Dashboard
 
-Vista general de la aplicación.
+Main overview of the application.
 
-![Dashboard de TR Tracking](docs/images/dashboard.png)
+![TR Tracking Dashboard](docs/images/dashboard.png)
 
-### Cartera de inversiones
+### Investment portfolio
 
-Consulta y seguimiento de las inversiones registradas.
+View and track your recorded investments.
 
-![Cartera de inversiones](docs/images/portfolio.png)
+![Investment portfolio](docs/images/portfolio.png)
 
-### Gestión de inversiones
+### Investment management
 
-Interfaz para registrar y gestionar operaciones de compra y venta.
+Interface for recording and managing buy and sell operations.
 
-![Gestión de inversiones](docs/images/investments.png)
+![Investment management](docs/images/investments.png)
 
-### Gestión de activos
+### Asset management
 
-Consulta y administración de los activos registrados.
+Browse and administer your registered assets.
 
-![Gestión de activos](docs/images/assets.png)
-![Gestión de activos](docs/images/assets-type.png)
+![Asset management](docs/images/assets.png)
+![Asset management](docs/images/assets-type.png)
 
-### Configuración
+### Settings
 
-Opciones de configuración de la aplicación.
+Account configuration options.
 
-![Configuración de TR Tracking](docs/images/settings.png)
-
----
-
-## Funcionalidades
-
-- **Dashboard:** acceso a la vista principal de la aplicación.
-- **Cartera de inversiones:** consulta de la información de la cartera.
-- **Gestión de inversiones:** registro y administración de inversiones y operaciones de compra y venta.
-- **Gestión de activos:** administración y consulta de activos.
-- **Tipos de activos:** gestión de las categorías o tipos de activos.
-- **Configuración:** opciones personales y configuración del idioma.
-- **Seguridad:** autenticación de usuarios y gestión de contraseñas.
-- **Control de versiones:** identificación de la versión instalada y del commit utilizado en la compilación.
-- **Comprobación de actualizaciones:** consulta de nuevas versiones publicadas en GitHub.
-
-Las funcionalidades disponibles pueden variar según la versión instalada.
+![TR Tracking Settings](docs/images/settings.png)
 
 ---
 
-## Tecnologías
+## Features
 
-| Tecnología | Uso |
+- **Dashboard:** summary of invested capital, sales, gains, fees, total cost and operation count, with charts (distribution by type and by asset, cumulative capital, monthly contribution, monthly sales and gains).
+- **Portfolio:** filterable breakdown of your portfolio by asset type and by individual asset, including invested capital, sold amounts and gains.
+- **Investment management:** record and manage buy and sell operations with filters (type, asset, operation, date range, free-text search) and pagination.
+- **Scheduled purchases (DCA):** configure recurring buy tasks at six frequencies (weekly, monthly, twice a month, quarterly) with start date, optional end date, amount and commission. Occurrences appear in a confirmation queue — you enter the exact purchase date before the investment is recorded.
+- **Asset management:** create and edit assets with ticker, ISIN, currency and description; asset detail with full investment history.
+- **Asset types:** organise assets into custom categories with automatic colour coding.
+- **Settings:** switch between Spanish and English (also changes amount and date formats); change your password.
+- **Security:** per-user data isolation, CSRF protection, brute-force login throttling, bcrypt passwords, PDO prepared statements.
+- **Version check:** displays the installed version and checks for new releases on GitHub.
+
+---
+
+## Tech stack
+
+| Technology | Role |
 |---|---|
-| PHP 8.3 | Lógica de la aplicación |
-| Apache | Servidor web |
-| MySQL 8.4 | Persistencia de datos |
-| Docker | Contenedorización de la aplicación |
-| Docker Compose | Orquestación de los servicios |
-| Git y GitHub | Control de versiones y publicación de releases |
-
-La aplicación utiliza una estructura propia de controladores, modelos, vistas y rutas, sin depender de un framework PHP completo.
-
----
-
-## Requisitos
-
-Para ejecutar TR Tracking mediante Docker necesitas:
-
-- Docker Engine.
-- Docker Compose v2.
-- Acceso al repositorio.
-- Un archivo `.env` con la configuración necesaria para el entorno.
-- Puertos disponibles y una configuración de red compatible con el despliegue elegido.
-
-La aplicación también puede desplegarse en dispositivos de arquitectura ARM, como una Raspberry Pi, siempre que la imagen de Docker y sus dependencias sean compatibles con la arquitectura del dispositivo.
+| PHP 8.3 | Application logic (custom MVC, no framework) |
+| Apache | Web server (mod_rewrite, single entry point) |
+| MySQL 8.4 | Data persistence |
+| Docker | Containerisation |
+| Docker Compose | Service orchestration |
+| Bootstrap 5.3 | UI (CDN) |
+| Chart.js 4.4 | Charts (CDN) |
+| GitHub Actions | CI (PHP lint, translation check, Docker build) |
 
 ---
 
-## Instalación
+## Requirements
 
-### 1. Clonar el repositorio
+- Docker Engine
+- Docker Compose v2 (`docker compose`)
+- A browser with internet access (Bootstrap and Chart.js are loaded from jsDelivr CDN)
+
+No PHP or MySQL installation required on the host. The application also runs on ARM devices (e.g. Raspberry Pi) as long as the Docker image is compatible.
+
+---
+
+## Installation
+
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/ForgeRGX/TR-Tracking.git
 cd TR-Tracking
 ```
 
-### 2. Configurar las variables de entorno
-
-Si el repositorio incluye un archivo `.env.example`, crea tu configuración local a partir de él:
+### 2. Configure environment variables
 
 ```bash
 cp .env.example .env
 ```
 
-Edita `.env` y configura las variables necesarias para tu entorno, incluidas las credenciales de la base de datos y los parámetros de despliegue.
+Edit `.env` and set at minimum the database credentials and the web port. **Never commit `.env` or real credentials to the repository.**
 
-**Importante:** no publiques el archivo `.env` ni incluyas credenciales reales en el repositorio.
+| Variable | Purpose |
+|---|---|
+| `MYSQL_DATABASE`, `MYSQL_USER`, `MYSQL_PASSWORD` | Database and application user |
+| `MYSQL_ROOT_PASSWORD` | MySQL root password (used by backup/migration scripts) |
+| `WEB_PORT` | Exposed web port (default `8080`) |
+| `DB_HOST_PORT` | Local MySQL port for SQL clients (default `3307`, bound to `127.0.0.1` only) |
+| `ALLOW_REGISTRATION` | `true` to allow sign-ups at `/register`; set to `false` once your users are created |
+| `APP_DEBUG` | `true` shows detailed errors (development only) |
+| `TZ` | Timezone (default `Europe/Madrid`) |
 
-### 3. Construir y arrancar los servicios
-
-Desde la raíz del proyecto:
+### 3. Build and start the services
 
 ```bash
 docker compose build
 docker compose up -d
 ```
 
-Comprueba el estado de los contenedores:
+Check container status:
 
 ```bash
 docker compose ps
 ```
 
-Consulta los registros si necesitas diagnosticar algún problema:
+View logs if you need to diagnose a problem:
 
 ```bash
 docker compose logs --tail=100
 ```
 
-### 4. Acceder a la aplicación
+### 4. Access the application
 
-Abre en el navegador la dirección configurada para tu despliegue.
+Open the address configured in your deployment in a browser.
 
-Si utilizas un proxy inverso, como Nginx, asegúrate de que el dominio y el enrutamiento apuntan correctamente al servicio web.
+On a fresh install the database schema is applied automatically from `database/schema.sql`. The first user who registers always succeeds (even if `ALLOW_REGISTRATION=false`) and gets four default asset types created automatically (Brokerage, Private Markets, Fixed Income, Crypto Wallet).
 
-> La configuración exacta de puertos, base de datos y red depende del archivo `docker-compose.yml` y de las variables de entorno de cada instalación.
+If you use a reverse proxy (e.g. Nginx), make sure the domain and routing point to the web service correctly.
 
 ---
 
-## Estructura del proyecto
+## Upgrading from a previous version
 
-La estructura general del repositorio se organiza en los siguientes directorios:
+### From v1.0.0 → v2.0.0
+
+1. **Back up your data first:**
+
+```bash
+scripts/backup.sh
+```
+
+2. **Pull the latest code:**
+
+```bash
+git pull origin main
+```
+
+3. **Rebuild the Docker image:**
+
+```bash
+docker compose up -d --build
+```
+
+4. **Run the database migrations** (idempotent — safe to run multiple times):
+
+```bash
+scripts/migrate.sh
+```
+
+This applies only the pending migrations:
+- `003_operation_type.sql` — adds `operation_type` to `investments` (existing records become purchases)
+- `004_scheduled_purchases.sql` — adds `scheduled_purchases` and `scheduled_purchase_occurrences` tables
+
+---
+
+## Common operations
+
+```bash
+docker compose ps                   # show service status
+docker compose logs -f              # live logs (Ctrl+C to exit)
+docker compose restart              # restart containers
+docker compose down                 # stop and remove containers (data is preserved)
+docker compose up -d --build        # rebuild after code or Dockerfile changes
+docker compose down -v              # WARNING: also deletes the mysql_data volume (all data lost)
+```
+
+---
+
+## Backup and restore
+
+```bash
+scripts/backup.sh                                   # creates backups/investments_YYYY-MM-DD.sql
+scripts/restore.sh backups/investments_2026-10-14.sql
+```
+
+`backup.sh` never overwrites: if a file for the current day already exists, it appends the time to the filename. On Windows, use Git Bash / WSL or run the commands manually:
+
+```bash
+# Backup
+docker compose exec -T db sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysqldump -u root --single-transaction --no-tablespaces "$MYSQL_DATABASE"' > backups/investments_2026-10-14.sql
+# Restore
+docker compose exec -T db sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql -u root "$MYSQL_DATABASE"' < backups/investments_2026-10-14.sql
+```
+
+Keep copies of `backups/` outside your machine — they are not tracked by git.
+
+---
+
+## Project structure
 
 ```text
 TR-Tracking/
-├── config/          # Configuración y definición de rutas
-├── controllers/     # Controladores de la aplicación
-├── core/            # Componentes comunes y utilidades
-├── database/        # Esquema, migraciones y recursos SQL
-├── lang/            # Traducciones
-├── models/          # Modelos y acceso a datos
-├── public/          # Punto de entrada y recursos públicos
-│   └── static/      # CSS, JavaScript y otros recursos
-├── scripts/         # Scripts auxiliares
-├── views/           # Plantillas de interfaz
+├── config/          # App configuration and route definitions
+├── controllers/     # MVC controllers
+├── core/            # Framework kernel (Router, Database, Auth, I18n, View, helpers)
+├── database/
+│   ├── schema.sql           # Full schema (auto-applied on first run)
+│   └── migrations/          # Incremental migrations for existing installs
+├── lang/            # Translations (en.php — keys are Spanish strings)
+├── models/          # Data models (static classes, PDO queries)
+├── public/          # Front controller (index.php) and static assets
+│   └── static/      # CSS, JavaScript, images
+├── scripts/         # backup.sh, restore.sh, migrate.sh, reset_password.sh, lint.sh
+├── views/           # PHP view templates
+│   ├── dashboard/
+│   ├── portfolio/
+│   ├── investments/
+│   ├── scheduled/   # Scheduled purchases (DCA)
+│   ├── assets/
+│   ├── types/
+│   ├── partials/
+│   └── errors/
 ├── docs/
-│   └── images/      # Capturas de pantalla y recursos visuales
+│   └── images/      # Screenshots and visual assets
 ├── Dockerfile
 ├── docker-compose.yml
 └── README.md
@@ -176,44 +249,38 @@ TR-Tracking/
 
 ---
 
-## Versiones y actualizaciones
+## Security
 
-TR Tracking utiliza Git para controlar los cambios y GitHub Releases para publicar versiones estables.
-
-Cada versión publicada puede identificarse mediante una etiqueta (*tag*) y una release asociada.
-
-La aplicación puede mostrar información de la versión instalada y comprobar si existe una versión más reciente publicada en GitHub.
-
-Puedes consultar las versiones disponibles en:
-
-**[Releases de TR Tracking](https://github.com/ForgeRGX/TR-Tracking/releases)**
-
-Para consultar el código fuente y los cambios del proyecto:
-
-**[Repositorio en GitHub](https://github.com/ForgeRGX/TR-Tracking)**
+- All queries use PDO prepared statements — no SQL injection.
+- All output is escaped with `htmlspecialchars` — no XSS.
+- CSRF token validated on every POST request.
+- Passwords stored as bcrypt hashes; session regenerated on login, logout and password change.
+- Brute-force protection: 5 failures per user+IP or 15 per IP in 15 minutes temporarily blocks login.
+- Data is strictly isolated per user — opening another user's URL returns 404.
+- Apache headers: `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Options -Indexes`.
+- Database is only accessible from `127.0.0.1` on the host. Do not expose it directly to the internet.
 
 ---
 
-## Seguridad
+## Versions and updates
 
-- No publiques contraseñas, tokens ni claves de acceso.
-- Mantén las credenciales fuera del código fuente.
-- No incluyas copias de seguridad con datos personales o financieros.
-- Revisa los cambios y el historial de Git antes de publicar información nueva.
-- Mantén actualizados PHP, MySQL, Docker y sus dependencias.
-- No expongas directamente servicios internos, como la base de datos, a Internet sin las medidas de protección adecuadas.
+TR Tracking uses [SemVer](https://semver.org/) (`MAJOR.MINOR.PATCH`) and publishes stable releases on GitHub.
+
+The application displays the installed version and checks for newer releases automatically.
+
+**[Releases → github.com/ForgeRGX/TR-Tracking/releases](https://github.com/ForgeRGX/TR-Tracking/releases)**
 
 ---
 
-## Licencia
+## Licence
 
-La licencia del proyecto está pendiente de definir.
+The project licence is pending definition.
 
-Hasta que se incluya un archivo `LICENSE` con los términos correspondientes, no debe asumirse que el código está disponible para su reutilización o redistribución sin restricciones.
+Until a `LICENSE` file with the applicable terms is included, no assumption of free reuse or redistribution should be made.
 
 ---
 
 <p align="center">
   <strong>TR Tracking</strong><br>
-  Seguimiento de inversiones en un entorno propio, flexible y autogestionado.
+  Investment tracking on your own infrastructure — flexible, private and self-managed.
 </p>

@@ -6,7 +6,6 @@
 # ...
 docker-compose.yml
 !docker-compose.yml.example
-CHANGELOG.md
 READMEv2.md
 
 # Copias de seguridad de la base de datos (contienen datos financieros)

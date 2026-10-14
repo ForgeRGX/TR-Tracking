@@ -5,9 +5,11 @@
         ['/', 'Dashboard', 'bi-speedometer2'],
         ['/portfolio', 'Portfolio', 'bi-pie-chart'],
         ['/investments', 'Inversiones', 'bi-cash-coin'],
+        ['/scheduled', 'Programadas', 'bi-calendar-check'],
         ['/assets', 'Activos', 'bi-collection'],
         ['/types', 'Tipos de activo', 'bi-tags'],
     ];
+    $pendingScheduled = Auth::check() ? ScheduledPurchaseOccurrence::pendingCount() : 0;
     $publicPaths = ['/login', '/register'];
     $path        = current_path();
 ?>
@@ -44,6 +46,9 @@
                                     <li class="nav-item">
                                         <a class="nav-link<?= nav_active($path) ? ' active' : '' ?>" href="<?= e($path) ?>">
                                             <i class="bi <?= e($icon) ?>"></i><?= e(t($label)) ?>
+                                            <?php if ($path === '/scheduled' && $pendingScheduled > 0): ?>
+                                                <span class="badge text-bg-warning ms-1"><?= $pendingScheduled ?></span>
+                                            <?php endif; ?>
                                         </a>
                                     </li>
                                 <?php endforeach; ?>
