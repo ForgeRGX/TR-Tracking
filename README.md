@@ -262,9 +262,6 @@ TR-Tracking/
 
 ---
 
-<<<<<<< HEAD
-## Licencia
-=======
 ## Versions and updates
 
 TR Tracking uses [SemVer](https://semver.org/) (`MAJOR.MINOR.PATCH`) and publishes stable releases on GitHub.
@@ -276,23 +273,14 @@ The application displays the installed version and checks for newer releases aut
 ---
 
 ## Licence
->>>>>>> a7320ac (feat: add scheduled purchases (DCA) and v2.0.0 release)
 
 The project licence is pending definition.
 
-<<<<<<< HEAD
-Hasta que se incluya un archivo `LICENSE` con los términos correspondientes, no se debe asumir que el código está disponible para su reutilización o redistribución sin restricciones.
-=======
 Until a `LICENSE` file with the applicable terms is included, no assumption of free reuse or redistribution should be made.
->>>>>>> a7320ac (feat: add scheduled purchases (DCA) and v2.0.0 release)
 
 ---
 
 <p align="center">
   <strong>TR Tracking</strong><br>
-<<<<<<< HEAD
-  Seguimiento de inversiones en un entorno propio, flexible y autogestionado.
-=======
   Investment tracking on your own infrastructure — flexible, private and self-managed.
->>>>>>> a7320ac (feat: add scheduled purchases (DCA) and v2.0.0 release)
 </p>
